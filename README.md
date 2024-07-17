@@ -1,4 +1,4 @@
-[![Tests](https://github.com/fjelltopp/ckanext-file-uploader-js/workflows/Tests/badge.svg?branch=main)](https://github.com/fjelltopp/ckanext-file-uploader-js/actions)
+[![Tests](https://github.com/fjelltopp/ckanext-file-uploader-js/actions/workflows/test.yml/badge.svg)](https://github.com/fjelltopp/ckanext-file-uploader-js/actions/workflows/test.yml)
 
 # ckanext-file-uploader-js
 
