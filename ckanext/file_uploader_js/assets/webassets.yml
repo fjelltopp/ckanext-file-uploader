@@ -1,0 +1,14 @@
+# file_uploader_js-js:
+#   filter: rjsmin
+#   output: ckanext-file_uploader_js/%(version)s-file_uploader_js.js
+#   contents:
+#     - js/file_uploader_js.js
+#   extra:
+#     preload:
+#       - base/main
+
+# file_uploader_js-css:
+#   filter: cssrewrite
+#   output: ckanext-file_uploader_js/%(version)s-file_uploader_js.css
+#   contents:
+#     - css/file_uploader_js.css
