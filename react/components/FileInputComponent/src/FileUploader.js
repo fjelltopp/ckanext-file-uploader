@@ -6,8 +6,14 @@ import { Client } from "giftless-client";
 export default function FileUploader({
     maxResourceSize, lfsServer, orgId, datasetName,
     setUploadProgress, setUploadFileName, setHiddenInputs,
-    setUploadError
+    setUploadAlert
 }) {
+
+    const whitelist = {
+        'application/pdf': ['.pdf'],
+        'image/png': ['.png'],
+    };
+    const allowed_file_extensions = Object.values(whitelist).flat();
 
     const getAuthToken = () => {
         const csrf_field = $('meta[name=csrf_field_name]').attr('content');
@@ -19,7 +25,8 @@ export default function FileUploader({
         )
             .then(res => res.data.result.token)
             .catch(error => {
-                setUploadError({
+                setUploadAlert({
+                    severity: 'danger',
                     error: ckan.i18n._('Authorisation Error'),
                     description: ckan.i18n._('You are not authorized to upload this resource.')
                 });
@@ -35,7 +42,8 @@ export default function FileUploader({
             })
         )
             .catch(error => {
-                setUploadError({
+                setUploadAlert({
+                    severity: 'danger',
                     error: ckan.i18n._('Server Error'),
                     description: ckan.i18n._('An unknown server error has occurred.')
                 });
@@ -49,6 +57,7 @@ export default function FileUploader({
         const authToken = await getAuthToken();
         console.log(authToken);
         const client = new Client(lfsServer, authToken, ['basic']);
+        console.log(client);
         await uploadFile(client, file);
         setUploadProgress({ loaded: 100, total: 100 });
         setUploadFileName(file._descriptor.name);
@@ -63,21 +72,31 @@ export default function FileUploader({
         multiple: false,
         noClick: true,
         maxSize: maxResourceSize * 1000000,
+        accept: whitelist,
         onDrop: acceptedFiles =>
             handleFileSelected(acceptedFiles[0]),
         onDropRejected: rejectedFiles => {
             if (rejectedFiles.length > 1) {
-                setUploadError({
+                setUploadAlert({
+                    severity: 'warning',
                     error: ckan.i18n._('Too many files'),
                     description: ckan.i18n._('You can only upload one file for each resource.')
                 });
             } else if (JSON.stringify(rejectedFiles).includes('file-too-large')) {
-                setUploadError({
+                setUploadAlert({
+                    severity: 'warning',
                     error: ckan.i18n._('File Too Large'),
                     description: ckan.i18n._(`Resources cannot be larger than ${maxResourceSize} megabytes.`)
                 });
+            } else if (JSON.stringify(rejectedFiles).includes('file-invalid-type')) {
+                setUploadAlert({
+                    severity: 'warning',
+                    error: ckan.i18n._('Invalid File Type'),
+                    description: ckan.i18n._('Only certain file types are allowed.') + ' [' + allowed_file_extensions.join(', ') + ']'
+                });
             } else {
-                setUploadError({
+                setUploadAlert({
+                    severity: 'danger',
                     error: ckan.i18n._('Unknown Error'),
                     description: ckan.i18n._('An unknown error has occurred.')
                 });

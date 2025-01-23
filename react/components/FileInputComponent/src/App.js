@@ -13,8 +13,20 @@ export default function App({ loadingHtml, maxResourceSize, lfsServer, orgId, da
     const [uploadfileName, setUploadFileName] = useState();
     const [linkUrl, setLinkUrl] = useState();
     const [hiddenInputs, _setHiddenInputs] = useState({});
-    const [uploadError, setUploadError] = useState(false);
+    const [uploadAlert, setUploadAlert] = useState({
+        severity: null,
+        error: null,
+        description: null
+    });
     const [useEffectCompleted, setUseEffectCompleted] = useState(false);
+
+    const closeAlert = () => {
+        setUploadAlert({
+            severity: null,
+            error: null,
+            description: null
+        });
+    }
 
     const setHiddenInputs = (newUploadMode, metadata) => {
         setUploadMode(newUploadMode);
@@ -77,14 +89,22 @@ export default function App({ loadingHtml, maxResourceSize, lfsServer, orgId, da
         return <div dangerouslySetInnerHTML={{ __html: loadingHtml }}></div>
     }
 
-    if (uploadError) return (
-        <div className="alert alert-danger">
-            <p><i className="fa fa-exclamation-triangle"></i> {uploadError.error}</p>
+    if (uploadAlert.severity) return (
+        <div className={ `alert alert-${uploadAlert.severity} alert-dismissible` }>
+            <h3>
+                <i className="icon-padding fa fa-exclamation-triangle" style={{paddingRight: '1em'}}></i>
+                {uploadAlert.error}
+            </h3>
             <p>
-                <span>{uploadError.description}</span>
-                <br />
-                <span>{ckan.i18n._('Please refresh this page and try again.')}</span>
+                {uploadAlert.description}
             </p>
+            {uploadAlert.severity === "error" && (
+                <>
+                    <hr/>
+                    <p>{ckan.i18n._('Please refresh this page and try again.')}</p>
+                </>
+            )}
+            <button type="button" className="btn-close" onClick={closeAlert} aria-label="Close"></button>
         </div>
     )
 
@@ -112,7 +132,7 @@ export default function App({ loadingHtml, maxResourceSize, lfsServer, orgId, da
                 ? <FileUploader {...{
                     maxResourceSize, lfsServer, orgId, datasetName,
                     setUploadProgress, setUploadFileName,
-                    setHiddenInputs, setUploadError
+                    setHiddenInputs, setUploadAlert
                 }} />
                 : <UrlUploader {...{ linkUrl, resetComponent }} />
         )
