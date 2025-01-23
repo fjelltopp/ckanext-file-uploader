@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import React from 'react';
 import App from './src/App';
 
@@ -23,15 +23,14 @@ const existingResourceData = {
   size: getAttr('existingSize'),
 }
 
-const root = createRoot(componentElement);
-
 // wait for ckan.i18n to load
 window.addEventListener('load', function () {
-  root.render(
+  ReactDOM.render(
     <App {...{
       loadingHtml,
       maxResourceSize, lfsServer, orgId,
       datasetName, existingResourceData
-    }} />
+    }} />,
+    componentElement
   );
 })
