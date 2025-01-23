@@ -10,9 +10,6 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-install_requires =
-include_package_data = True
-
 setup(
     name="""ckanext-file-uploader""",
     # Versions should comply with PEP440.  For a discussion on single-sourcing
