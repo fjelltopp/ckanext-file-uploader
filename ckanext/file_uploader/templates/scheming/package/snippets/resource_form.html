@@ -2,7 +2,7 @@
 
 {% block basic_fields %}
 
-  <!-- {% asset 'file_uploader/file-uploader-css' %} -->
+  {% asset 'file_uploader/file-uploader-css' %}
   {% set dataset = h.get_dataset_from_id(pkg_name) %}
   <div
       id="FileInputComponent"

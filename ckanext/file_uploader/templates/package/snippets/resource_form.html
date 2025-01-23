@@ -3,7 +3,7 @@
 {% set dataset = h.get_dataset_from_id(pkg_name) %}
 
 {% block basic_fields_url %}
-    <!-- {% asset 'file_uploader/file-uploader-css' %} -->
+    {% asset 'file_uploader/file-uploader-css' %}
     <div
         id="FileInputComponent"
         data-lfsServer="{{ h.blob_storage_server_url() }}"
