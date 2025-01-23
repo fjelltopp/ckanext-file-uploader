@@ -1,0 +1,14 @@
+file-uploader-js:
+  output: ckanext-file_uploader/%(version)s-file-uploader.js
+  contents:
+    - frictionless.js
+    - FileInputComponent.js
+  extra:
+    preload:
+      - base/main
+
+file-uploader-css:
+  filter: cssrewrite
+  output: ckanext-file_uploader/%(version)s-file-uploader.css
+  contents:
+    - FileInputComponent.css
