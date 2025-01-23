@@ -35,7 +35,7 @@ setup(
         "Programming Language :: Python :: 3.10",
     ],
     keywords="""CKAN resource file upload javascript widget""",
-        packages=find_packages(exclude=["contrib", "docs", "tests*", "react"]),
+    packages=find_packages(exclude=["contrib", "docs", "tests*", "react"]),
     namespace_packages=["ckanext"],
     install_requires=[],
     # If there are data files included in your packages that need to be
