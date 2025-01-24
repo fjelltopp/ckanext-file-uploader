@@ -48,13 +48,13 @@ To temporary patch the CKAN configuration for the duration of a test you can use
         pass
 """
 
-import ckanext.file_uploader_js.plugin as plugin
+import ckanext.file_uploader.plugin as plugin
 import pytest
 from ckan.plugins import plugin_loaded
 
 
-@pytest.mark.ckan_config("ckan.plugins", "file_uploader_js")
+@pytest.mark.ckan_config("ckan.plugins", "file_uploader")
 @pytest.mark.usefixtures("with_plugins")
 def test_plugin():
     assert plugin
-    assert plugin_loaded("file_uploader_js")
+    assert plugin_loaded("file_uploader")
